@@ -1,4 +1,5 @@
 __pycache__
 test.py
-indexx.csv
+data.csv
 *.code-workspace
+readme.md
