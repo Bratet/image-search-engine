@@ -5,7 +5,7 @@ A simple implementation of an image search engine in python
 
 run on the terminal :
 
-`python indexiation.py`
+`python indexation.py`
 
 then you can use the program by executing the main.py file
 
