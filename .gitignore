@@ -1,5 +1,4 @@
 __pycache__
 test.py
-data.csv
 *.code-workspace
-readme.md
+data.json

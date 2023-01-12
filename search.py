@@ -17,30 +17,48 @@ ap.add_argument("-n", "--n",
 args = vars(ap.parse_args())
 
 
-# initialize the image descriptor
-cd = ColorDescriptor((8, 12, 3))
-# initialize the texture descriptor
-td = TextureDescriptor()
+limit = 5
 
+#######################################################################################
 
 # load the query image and describe it
 query = cv2.imread(args["query"])
 query = cv2.resize(query, (220, 220))
-features = []
-features.append(cd.describe(query))
-features.append(td.extract_textures(query))
 
-index = "indexx.csv"
+data = "data.json"
+
+all_methods = {
+	"colors" : ['hsv', 'rgb', 'mean'],
+	"textures" : ['lbp', 'glcm', 'haralick'],
+	"shape" : ['zernike', 'hu']
+}
+
+
+list_of_methods = {
+	"colors" : 'hsv',
+	"textures" : 'lbp',
+	"shapes" : 'zernike'
+}
 
 # perform the search
-searcher = Searcher(index)
-results = searcher.search(features, textures = float(args["texture"]), colors = float(args["color"]), limit = int(args["n"]))
+searcher = Searcher(data)
+# results = searcher.search_by_color(query, method = "hsv")
+# results = searcher.search_by_texture(query, "haralick")
+# results = searcher.search_by_shape(query, "hu")
+results = searcher.hybrid_search(query, list_of_methods, textures = 1, colors = 1, shapes = 1, limit = 5)
+
+########################################################################################
 
 l = []
 # loop over the results
-for (score, resultID) in results:
+for (score, resultID) in results[:limit]:
 	# load the result image and display it
-	result = cv2.imread(resultID)
+	if resultID < 10:
+		result = cv2.imread('dataset\cat_000' + str(resultID) + '.jpg')
+	elif resultID < 100:
+		result = cv2.imread('dataset\cat_00' + str(resultID) + '.jpg')
+	else:
+		result = cv2.imread('dataset\cat_0' + str(resultID) + '.jpg')
 	l += [cv2.resize(result, (220, 220))]
 
 # show the query
