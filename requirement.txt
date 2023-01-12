@@ -1,0 +1,9 @@
+numpy
+imutils
+cv2
+mahotas
+skimage
+glob
+json
+PIL
+tkinter
